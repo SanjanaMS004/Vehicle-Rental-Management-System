@@ -215,8 +215,8 @@ def Admin_Opt():
 		opt_menu.resizable(0,0)
 		k_font = tkinter.font.Font(family='Times new roman', size=10, weight=tkinter.font.BOLD)
 
-		addbutton=Button(opt_menu,command=add_book,text=" Add Vehicle ",bg='light green',height=1,width=16,font=k_font)
-		delbutton=Button(opt_menu,command=del_book,text=" Remove Vehicle ",bg='pink',height=1,width=12,font=k_font)
+		addbutton=Button(opt_menu,command=add_vehicle,text=" Add Vehicle ",bg='light green',height=1,width=16,font=k_font)
+		delbutton=Button(opt_menu,command=del_vehicle,text=" Remove Vehicle ",bg='pink',height=1,width=12,font=k_font)
 		backbutton=Button(opt_menu,command=reopen_login,text=" Log out ",bg='light blue',height=1,width=12,font=k_font)
 
 		addbutton.grid(row=4,column=4)
@@ -281,9 +281,9 @@ def binary_search(fname, search_key):
 	return -1
 
 
-def add_book():
-	global book_id
-	global book_name
+def add_vehicle():
+	global vehicle_id
+	global vehicle_name
 	global author_name
 	global add_menu
 
@@ -293,18 +293,18 @@ def add_book():
 	add_menu.resizable(0,0)
 	k_font = tkinter.font.Font(family='Times new roman', size=10, weight=tkinter.font.BOLD)
 
-	book_id_label=Label(add_menu,text="Vehicle ID (Should be 5 digit)")
+	vehicle_id_label=Label(add_menu,text="Vehicle ID (Should be 5 digit)")
 	book_label=Label(add_menu,font=k_font, text="Vehicle")
 	author_label=Label(add_menu,font=k_font, text="Price")
-	book_id=Entry(add_menu, width=30)
-	book_name=Entry(add_menu, width=30)
+	vehicle_id=Entry(add_menu, width=30)
+	vehicle_name=Entry(add_menu, width=30)
 	author_name=Entry(add_menu, width=30)
 	addbutton1=Button(add_menu,command=add_check,text=" Add Vehicle ",bg='dark orange',height=1,width=10,font=k_font)
 
-	book_id_label.grid(row=1,sticky=E)
-	book_id.grid(row=1,column=1)
+	vehicle_id_label.grid(row=1,sticky=E)
+	vehicle_id.grid(row=1,column=1)
 	book_label.grid(row=2,sticky=E)
-	book_name.grid(row=2,column=1)
+	vehicle_name.grid(row=2,column=1)
 	author_label.grid(row=3,sticky=E)
 	author_name.grid(row=3,column=1)
 	addbutton1.place(x=140, y=100)
@@ -313,31 +313,31 @@ def add_book():
 
 def add_check():
 	global b_id
-	b_id=book_id.get()
-	b_name=book_name.get().upper()
+	b_id=vehicle_id.get()
+	b_name=vehicle_name.get().upper()
 	a_id=author_name.get()
 
 	if len(b_name)==0:
 		tkinter.messagebox.showinfo("Add Vehicle ","You did not type a Vehicle name O_O")
 		add_menu.lift()
-		return(add_book)
+		return(add_vehicle)
 
 	if len(b_id)!=5 or b_id.isdigit()==False:
 		tkinter.messagebox.showinfo("Add Vehicle ","Please renter the details(ID should be 5 positive integers)")
 		add_menu.lift()
-		return(add_book)
+		return(add_vehicle)
 
 	if len(a_id) == 0 or a_id.isdigit()==False:
 		tkinter.messagebox.showinfo("Add Vehicle ", "Please renter the details(should be positive integers)")
 		add_menu.lift()
-		return (add_book)
+		return (add_vehicle)
 		#a_id = "Anonymous"
 
 	pos = binary_search('Bindex.txt', b_id)
 	if pos != -1:
 		tkinter.messagebox.showinfo("Book","Vehicle  already present.Please try again")
 		add_menu.lift()
-		return(add_book)
+		return(add_vehicle)
 
 	f22 = open ('BData.txt', 'a')
 	pos = f22.tell()
@@ -355,8 +355,8 @@ def add_check():
 	add_menu.destroy()
 
 
-def del_book():
-	global rb_id
+def del_vehicle():
+	global rv_id
 	global del_menu
 
 	del_menu=Tk()
@@ -400,8 +400,8 @@ def del_book():
 		borrow_list4.insert(0,Availability[num])
 
 
-	b_label=Label(del_menu,text="Vehicle ID")
-	rb_id=Entry(del_menu)
+	v_label=Label(del_menu,text="Vehicle ID")
+	rv_id=Entry(del_menu)
 	delbutton1=Button(del_menu,command=del_check,text=" Remove Vehicle ",bg='dark orange',height=1,width=15,font=k_font)
 	borrow_list2.configure(background="pink")
 	borrow_list3.configure(background="pink")
@@ -421,8 +421,8 @@ def del_book():
 	borrow_list2.grid(row=7,column=1)
 	borrow_list3.grid(row=7,column=3)
 	borrow_list4.grid(row=7,column=6)
-	b_label.grid(row=0,sticky=E)
-	rb_id.grid(row=0,column=1)
+	v_label.grid(row=0,sticky=E)
+	rv_id.grid(row=0,column=1)
 	delbutton1.grid(row=2,columnspan=1)
 
 	del_menu.mainloop()
@@ -430,18 +430,18 @@ def del_book():
 def del_check():
 
 	global del_id
-	del_id=rb_id.get()
+	del_id=rv_id.get()
 
 	if len(del_id)==0:
 		tkinter.messagebox.showinfo("Delete Vehicle","You did not type anything O_O")
 		del_menu.lift()
-		return(del_book)
+		return(del_vehicle)
 
 	pos = binary_search('Bindex.txt', del_id)
 	if(pos == -1):
 		tkinter.messagebox.showinfo("Delete","Vehicle not present.Please reenter")
 		del_menu.destroy()
-		return(del_book)
+		return(del_vehicle)
 	else:
 		f = open ('BData.txt', 'r')
 		f.seek(pos)
@@ -450,7 +450,7 @@ def del_check():
 		if(w1[3] == 'N'):
 			tkinter.messagebox.showinfo("Delete","Vehicle currently borrowed. Please try another Vehicle")
 			del_menu.destroy()
-			return(del_book)
+			return(del_vehicle)
 
 	index = -1
 
